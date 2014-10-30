@@ -7,21 +7,21 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 
 ##### Example
 
-    <fd-rest-element-service 
+    <fd-rest-service 
       apiUrl="fritz.bestmazzo.it:9111/v3/"
       ssl="false" credentialRequired="true"
       fdtype="system/info/framework"
       method="GET"
       >
-    </fd-rest-element-service>
+    </fd-rest-service>
 
-@element fd-rest-element-service
+@element fd-rest-service
 @blurb Element providing a service for interacting with Freedomoric's Rest APIs.
 @status beta
-@homepage http://freedomotic.github.io/fd-rest-element-service
+@homepage http://freedomotic.github.io/fd-polymer-rest-service
 -->
 
-<polymer-element name="fd-polymer-rest-service" attributes="fditems fdtype toast apiurl credentialrequired ssl method auto params body contentType">
+<polymer-element name="fd-rest-service" attributes="fditems fdtype toast apiurl credentialrequired ssl method auto params body contentType">
   <template>
     <core-localstorage
       name="apiurl" 
@@ -52,7 +52,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 
   </template>
   <script>
-  Polymer('fd-polymer-rest-service', {
+  Polymer('fd-rest-service', {
     alwaysPrepare: true,
       /**
        * The 'fdtype' attribute represents the path inside API tree
