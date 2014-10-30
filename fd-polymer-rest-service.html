@@ -3,16 +3,22 @@
 <link rel="import" href="../core-localstorage/core-localstorage.html">
 
 <!--
-Element providing solution to no problem in particular.
+Element providing a service for interfacing Freedomotic's Rest APIs.
 
 ##### Example
 
-    <fd-rest-element-service></fd-rest-element-service>
+    <fd-rest-element-service 
+      apiUrl="fritz.bestmazzo.it:9111/v3/"
+      ssl="false" credentialRequired="true"
+      fdtype="system/info/framework"
+      method="GET"
+      >
+    </fd-rest-element-service>
 
 @element fd-rest-element-service
-@blurb Element providing solution to no problem in particular.
+@blurb Element providing a service for interacting with Freedomoric's Rest APIs.
 @status beta
-@homepage http://polymerlabs.github.io/fd-rest-element-service
+@homepage http://freedomotic.github.io/fd-rest-element-service
 -->
 
 <polymer-element name="fd-polymer-rest-service" attributes="fditems fdtype toast apiurl credentialrequired ssl method auto params body contentType">
@@ -47,16 +53,56 @@ Element providing solution to no problem in particular.
   </template>
   <script>
   Polymer('fd-polymer-rest-service', {
-
     alwaysPrepare: true,
-    
+      /**
+       * The 'fdtype' attribute represents the path inside API tree
+       *
+       * @attribute fdtype
+       * @type string
+       */
     fdtype:'environments',
 
     fditems: [],
-
+    
+      /**
+       * The 'method' attribute represents the HTTP method used for the current API call
+       *
+       * @attribute method
+       * @type string
+       */
     method: "GET",
 
+      /**
+       * The 'auto' attribute tells whether API call should be fired imediately or explicitely by the go() call
+       *
+       * @attribute auto
+       * @type boolean
+       */
+    
     auto: true,
+      /**
+       * The 'credentialRequired' attribute tells whether the API call requires authentication 
+       *
+       * @attribute credentialRequired
+       * @type boolean
+       */
+    
+    credentialRequired: false,
+      /**
+       * The 'ssl' attribute tells whether the API call requires a encrypted connection 
+       *
+       * @attribute ssl
+       * @type boolean
+       */
+    ssl: false,
+
+      /**
+       * The 'apiUrl' attribute represents the URL through which the service can reach the API 
+       *
+       * @attribute apiUrl
+       * @type string
+       */
+    apiUrl: undefined,
 
     contentType: "application/json",
 
