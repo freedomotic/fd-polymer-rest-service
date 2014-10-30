@@ -1,0 +1,18 @@
+{
+  "name": "fd-polymer-rest-service",
+  "version": "0.1.0",
+  "keywords": [
+    "seed",
+    "polymer",
+    "web-components"
+  ],
+  "main": "fd-polymer-rest-service.html",
+  "dependencies": {
+    "polymer": "~0.4.2",
+    "core-ajax": "polymer/core-ajax#~0.4.2",
+    "core-localstorage": "polymer/core-localstorage#~0.4.2"
+  },
+  "devDependencies": {
+    "polymer-test-tools": "Polymer/polymer-test-tools#^0.4.0"
+  }
+}

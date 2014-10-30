@@ -1,0 +1,110 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-ajax/core-ajax.html">
+<link rel="import" href="../core-localstorage/core-localstorage.html">
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <fd-rest-element-service></fd-rest-element-service>
+
+@element fd-rest-element-service
+@blurb Element providing solution to no problem in particular.
+@status beta
+@homepage http://polymerlabs.github.io/fd-rest-element-service
+-->
+
+<polymer-element name="fd-polymer-rest-service" attributes="fditems fdtype toast apiurl credentialrequired ssl method auto params body contentType">
+  <template>
+    <core-localstorage
+      name="apiurl" 
+      value="{{apiurl}}">
+    </core-localstorage>
+
+    <core-localstorage
+      name="credentialrequired" 
+      value="{{credentialrequired}}">
+    </core-localstorage>
+
+    <core-localstorage
+      name="ssl" 
+      value="{{ssl}}">
+    </core-localstorage>
+    
+    <core-ajax id="ajax" 
+      auto="{{auto}}"
+      on-core-error="{{errorHandler}}"
+      on-core-response="{{elementsLoaded}}"
+      response="{{fditems}}"
+      handleAs="json"
+      method="{{method}}"
+      params="{{params}}"
+      body="{{body}}"
+      contentType="{{contentType}}">
+    </core-ajax>
+
+  </template>
+  <script>
+  Polymer('fd-polymer-rest-service', {
+
+    alwaysPrepare: true,
+    
+    fdtype:'environments',
+
+    fditems: [],
+
+    method: "GET",
+
+    auto: true,
+
+    contentType: "application/json",
+
+    observe: {
+      "ssl apiurl fdtype": "reloadUrl"
+    },
+    
+    created: function() {
+      this.fditems = [];
+    },
+
+    reloadUrl: function(){
+      if(this.ssl != undefined && this.apiurl && this.fdtype){   
+        this.$.ajax.url = (this.ssl ? "https" : "http") +"://"+ this.apiurl + this.fdtype +"/";
+      }
+    },
+
+    autoChanged: function(){
+      if(this.auto){
+        this.$.ajax.auto =  this.auto;
+      }
+    },
+
+    credentialrequiredChanged: function(){
+      if(this.credentialrequired){
+        this.$.ajax.withCredentials =  this.credentialrequired;
+      }
+    },
+
+    elementsLoaded: function(event) {
+      console.log("Loaded " + this.fdtype + " data:", this.fditems);
+      this.fire("rest-response", event)
+    },
+    
+    errorHandler: function(event){
+      console.log("Error:", event.detail);
+      if(this.toast){
+        this.toast.text="There was a problem loading "+this.fdtype+" data.";
+        this.toast.show();
+      }
+      this.fire("rest-error", event)
+    },
+
+    go: function(){
+      this.reloadUrl();
+      this.$.ajax.go();
+    }
+    
+  });
+  </script>
+</polymer-element>
