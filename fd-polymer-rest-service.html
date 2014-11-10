@@ -1,6 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../core-ajax/core-ajax.html">
+<<<<<<< HEAD
 <link rel="import" href="../core-localstorage/core-localstorage.html">
+=======
+<link rel="import" href="../fd-polymer-api-settings/fd-polymer-api-settings.html">
+>>>>>>> Split into rest and settings
 
 <!--
 Element providing a service for interfacing Freedomotic's Rest APIs.
@@ -20,24 +24,11 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 @status beta
 @homepage http://freedomotic.github.io/fd-polymer-rest-service
 -->
-
-<polymer-element name="fd-rest-service" attributes="fditems fdtype toast apiurl credentialrequired ssl method auto params body contentType">
+<polymer-element name="fd-rest-service" attributes="forceurl fditems fdtype toast apiurl credentialrequired method auto params body contentType">
   <template>
-    <core-localstorage
-      name="apiurl" 
-      value="{{apiurl}}">
-    </core-localstorage>
-
-    <core-localstorage
-      name="credentialrequired" 
-      value="{{credentialrequired}}">
-    </core-localstorage>
-
-    <core-localstorage
-      name="ssl" 
-      value="{{ssl}}">
-    </core-localstorage>
-    
+    <template if="{{!forceUrl}}">
+      <fd-api-settings apiUrl="{{apiUrl}}"></fd-api-settings>
+    </template>
     <core-ajax id="ajax" 
       auto="{{auto}}"
       on-core-error="{{errorHandler}}"
@@ -47,7 +38,8 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       method="{{method}}"
       params="{{params}}"
       body="{{body}}"
-      contentType="{{contentType}}">
+      contentType="{{contentType}}"
+      withCredentials="{{credentialrequired}}">
     </core-ajax>
 
   </template>
@@ -110,11 +102,20 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
        * @type string
        */
     apiUrl: undefined,
+    
+      /**
+       * The 'forceUrl' attribute forces the given apiUrl thus overriding fd-api-settings data 
+       *
+       * @attribute forceUrl
+       * @type boolean
+       */
+    forceUrl: false,
+
 
     contentType: "application/json",
 
     observe: {
-      "ssl apiurl fdtype": "reloadUrl"
+      "fdtype apiUrl": "reloadUrl"
     },
     
     created: function() {
@@ -122,8 +123,9 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
     },
 
     reloadUrl: function(){
-      if(this.ssl != undefined && this.apiurl && this.fdtype){   
-        this.$.ajax.url = (this.ssl ? "https" : "http") +"://"+ this.apiurl + this.fdtype +"/";
+      if(!!this.apiurl && !!this.fdtype){   
+        this.$.ajax.url = this.apiUrl + this.fdtype +"/";
+        console.log("REST:" + this.apiUrl);
       }
     },
 
@@ -132,13 +134,6 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
         this.$.ajax.auto =  this.auto;
       }
     },
-
-    credentialrequiredChanged: function(){
-      if(this.credentialrequired){
-        this.$.ajax.withCredentials =  this.credentialrequired;
-      }
-    },
-
     elementsLoaded: function(event) {
       console.log("Loaded " + this.fdtype + " data:", this.fditems);
       this.fire("rest-response", event)

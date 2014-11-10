@@ -14,5 +14,14 @@
   },
   "devDependencies": {
     "polymer-test-tools": "Polymer/polymer-test-tools#^0.4.0"
-  }
+  },
+  "_release": "0.1.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.6",
+    "commit": "d2f70f2336150a3de761c9785fa3efd331b952dd"
+  },
+  "_source": "file:///home/matteo/development/components/fd-polymer-rest-service/.git/",
+  "_target": "*",
+  "_originalSource": "file:///home/matteo/development/components/fd-polymer-rest-service/.git/"
 }
