@@ -1,6 +1,6 @@
 {
   "name": "fd-polymer-rest-service",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "keywords": [
     "seed",
     "polymer",
@@ -10,7 +10,7 @@
   "dependencies": {
     "polymer": "~0.4.2",
     "core-ajax": "polymer/core-ajax#~0.4.2",
-    "fd-polymer-api-settings": "file:///home/matteo/development/components/fd-polymer-api-settings/.git/"
+    "fd-polymer-api-settings": "~0.1.2"
   },
   "devDependencies": {
     "polymer-test-tools": "Polymer/polymer-test-tools#^0.4.0"
