@@ -1,10 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../core-ajax/core-ajax.html">
-<<<<<<< HEAD
-<link rel="import" href="../core-localstorage/core-localstorage.html">
-=======
 <link rel="import" href="../fd-polymer-api-settings/fd-polymer-api-settings.html">
->>>>>>> Split into rest and settings
 
 <!--
 Element providing a service for interfacing Freedomotic's Rest APIs.
@@ -12,8 +8,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 ##### Example
 
     <fd-rest-service 
-      apiUrl="fritz.bestmazzo.it:9111/v3/"
-      ssl="false" credentialRequired="true"
+      apiUrl="http://fritz.bestmazzo.it:9111/v3/"
       fdtype="system/info/framework"
       method="GET"
       >
@@ -24,11 +19,9 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 @status beta
 @homepage http://freedomotic.github.io/fd-polymer-rest-service
 -->
-<polymer-element name="fd-rest-service" attributes="forceurl fditems fdtype toast apiurl credentialrequired method auto params body contentType">
+<polymer-element name="fd-rest-service" attributes="fditems fdtype toast method auto params body contentType apiUrl credentialRequired">
   <template>
-    <template if="{{!forceUrl}}">
-      <fd-api-settings apiUrl="{{apiUrl}}"></fd-api-settings>
-    </template>
+   <fd-api-settings apiUrl="{{apiUrl}}" credentialRequired="{{credentialRequired}}"></fd-api-settings> 
     <core-ajax id="ajax" 
       auto="{{auto}}"
       on-core-error="{{errorHandler}}"
@@ -39,7 +32,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       params="{{params}}"
       body="{{body}}"
       contentType="{{contentType}}"
-      withCredentials="{{credentialrequired}}">
+      withCredentials="{{credentialRequired}}">
     </core-ajax>
 
   </template>
@@ -86,14 +79,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
        * @type boolean
        */
     
-    credentialRequired: false,
-      /**
-       * The 'ssl' attribute tells whether the API call requires a encrypted connection 
-       *
-       * @attribute ssl
-       * @type boolean
-       */
-    ssl: false,
+    credentialRequired: undefined,
 
       /**
        * The 'apiUrl' attribute represents the URL through which the service can reach the API 
@@ -102,15 +88,6 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
        * @type string
        */
     apiUrl: undefined,
-    
-      /**
-       * The 'forceUrl' attribute forces the given apiUrl thus overriding fd-api-settings data 
-       *
-       * @attribute forceUrl
-       * @type boolean
-       */
-    forceUrl: false,
-
 
     contentType: "application/json",
 
@@ -121,10 +98,9 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
     created: function() {
       this.fditems = [];
     },
-
     reloadUrl: function(){
-      if(!!this.apiurl && !!this.fdtype){   
-        this.$.ajax.url = this.apiUrl + this.fdtype +"/";
+      if(!!this.apiUrl && !!this.fdtype){   
+        this.$.ajax.url = this.apiUrl + this.fdtype ;
         console.log("REST:" + this.apiUrl);
       }
     },
@@ -138,7 +114,6 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       console.log("Loaded " + this.fdtype + " data:", this.fditems);
       this.fire("rest-response", event)
     },
-    
     errorHandler: function(event){
       console.log("Error:", event.detail);
       if(this.toast){
@@ -147,7 +122,6 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       }
       this.fire("rest-error", event)
     },
-
     go: function(){
       this.reloadUrl();
       this.$.ajax.go();
