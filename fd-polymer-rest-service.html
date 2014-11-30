@@ -10,7 +10,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
     <fd-rest-service 
       apiUrl="http://fritz.bestmazzo.it:9111/v3/"
       fdtype="system/info/framework"
-      method="GET"
+      method="GET" guest="true"
       >
     </fd-rest-service>
 
@@ -19,9 +19,9 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 @status beta
 @homepage http://freedomotic.github.io/fd-polymer-rest-service
 -->
-<polymer-element name="fd-rest-service" attributes="fditems fdtype toast method auto params headers body contentType apiUrl">
+<polymer-element name="fd-rest-service" attributes="fditems fdtype toast method auto params headers body contentType apiUrl guest">
   <template>
-   <fd-api-settings apiUrl="{{apiUrl}}"></fd-api-settings> 
+   <fd-api-settings apiUrl="{{apiUrl}}" guestAccess="{{guest}}"></fd-api-settings> 
     <core-ajax id="ajax" 
       auto="{{auto}}"
       on-core-error="{{errorHandler}}"
@@ -82,6 +82,13 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
        */
     apiUrl: undefined,
 
+      /**
+       * The 'guest' attribute tells whether the ajax access should provide generic guest login (guest:guest)
+       *
+       * @attribute guest
+       * @type boolean
+       */
+    guest: undefined,
     contentType: "application/json",
 
     observe: {
@@ -118,6 +125,20 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
     go: function(){
       this.reloadUrl();
       this.$.ajax.go();
+    },
+    guestChanged: function(oldValue,newValue){
+      console.log("GUEST:" + newValue );
+      if(newValue!= undefined){
+        if (this.$.ajax.headers == undefined) {
+          this.$.ajax.headers = {};
+        }
+        if(newValue== false){
+          this.$.ajax.headers.Authorization ='';
+        } else {      
+        this.$.ajax.headers.Authorization= "Basic Z3Vlc3Q6Z3Vlc3Q=";
+        }
+        console.log("HEADER:" + this.$.ajax.headers.Authorization);
+      }
     }
     
   });
