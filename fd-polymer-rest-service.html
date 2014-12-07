@@ -46,7 +46,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
        * @attribute fdtype
        * @type string
        */
-    fdtype:'environments',
+    fdtype:undefined,
 
       /**
        * The 'fditems' attribute collects data received as a response from a API call.
@@ -101,7 +101,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
     reloadUrl: function(){
       if(!!this.apiUrl && !!this.fdtype){   
         this.$.ajax.url = this.apiUrl + this.fdtype ;
-        console.log("REST:" + this.apiUrl);
+//        console.log("REST:" + this.apiUrl);
       }
     },
 
@@ -111,11 +111,11 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       }
     },
     elementsLoaded: function(event) {
-      console.log("Loaded " + this.fdtype + " data:", this.fditems);
+//      console.log("Loaded " + this.fdtype + " data:", this.fditems);
       this.fire("rest-response", event)
     },
     errorHandler: function(event){
-      console.log("Error:", event.detail);
+//      console.log("Error:", event.detail);
       if(this.toast){
         this.toast.text="There was a problem loading "+this.fdtype+" data.";
         this.toast.show();
@@ -127,7 +127,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       this.$.ajax.go();
     },
     guestChanged: function(oldValue,newValue){
-      console.log("GUEST:" + newValue );
+//      console.log("GUEST:" + newValue );
       if(newValue!= undefined){
         if (this.$.ajax.headers == undefined) {
           this.$.ajax.headers = {};
@@ -137,7 +137,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
         } else {      
         this.$.ajax.headers.Authorization= "Basic Z3Vlc3Q6Z3Vlc3Q=";
         }
-        console.log("HEADER:" + this.$.ajax.headers.Authorization);
+//        console.log("HEADER:" + this.$.ajax.headers.Authorization);
       }
     }
     
