@@ -19,7 +19,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 @status beta
 @homepage http://freedomotic.github.io/fd-polymer-rest-service
 -->
-<polymer-element name="fd-rest-service" attributes="fditems fdtype toast method auto params headers body contentType apiUrl guest">
+<polymer-element name="fd-rest-service" attributes="withCredentials fditems fdtype toast method auto params headers body contentType apiUrl guest">
   <template>
    <fd-api-settings apiUrl="{{apiUrl}}" guestAccess="{{guest}}"></fd-api-settings> 
     <core-ajax id="ajax" 
@@ -33,13 +33,13 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       params="{{params}}"
       body="{{body}}"
       contentType="{{contentType}}"
-      withCredentials="true">
+      withCredentials="{{withCredentials}}">
     </core-ajax>
 
   </template>
   <script>
   Polymer('fd-rest-service', {
-    alwaysPrepare: true,
+    withCredentials: true,
       /**
        * The 'fdtype' attribute represents the path inside API tree
        *
@@ -120,7 +120,8 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
         this.toast.text="There was a problem loading "+this.fdtype+" data.";
         this.toast.show();
       }
-      this.fire("rest-error", event)
+      this.fire("rest-error", event);
+      event.stopPropagation();
     },
     go: function(){
       this.reloadUrl();
