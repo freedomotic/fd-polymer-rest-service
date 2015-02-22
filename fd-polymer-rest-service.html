@@ -19,7 +19,7 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
 @status beta
 @homepage http://freedomotic.github.io/fd-polymer-rest-service
 -->
-<polymer-element name="fd-rest-service" attributes="withCredentials fditems fdtype toast method auto params headers body contentType apiUrl guest">
+<polymer-element name="fd-rest-service" attributes="withCredentials fditems fdtype toast method auto params headers body contentType apiUrl guest loading progress">
   <template>
    <fd-api-settings apiUrl="{{apiUrl}}" guestAccess="{{guest}}"></fd-api-settings> 
     <core-ajax id="ajax" 
@@ -33,7 +33,9 @@ Element providing a service for interfacing Freedomotic's Rest APIs.
       params="{{params}}"
       body="{{body}}"
       contentType="{{contentType}}"
-      withCredentials="{{withCredentials}}">
+      withCredentials="{{withCredentials}}"
+      progress="{{progress}}"
+      loading="{{loading}}">
     </core-ajax>
 
   </template>
